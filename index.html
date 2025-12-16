@@ -96,6 +96,23 @@
     .list-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px; }
     .list-row li { margin-bottom: 6px; }
     footer { text-align: center; color: var(--muted); font-size: 0.85rem; margin: 16px 0 6px; }
+    .test-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .test-result {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      min-width: 240px;
+    }
+    .test-result.ok { border-color: rgba(34,197,94,0.5); color: #bbf7d0; background: rgba(34,197,94,0.08); }
+    .test-result.fail { border-color: rgba(248,113,113,0.6); color: #fecdd3; background: rgba(248,113,113,0.08); }
   </style>
 </head>
 <body>
@@ -204,6 +221,16 @@
       </article>
     </section>
 
+    <section class="card" id="test">
+      <div class="badge">Test rapide</div>
+      <h3>Vérifier que la page fonctionne</h3>
+      <p class="muted">Lancez un mini-test DOM pour confirmer que les sections clés sont présentes (solution, parcours, plan MVP, faisabilité GitHub).</p>
+      <div class="test-box">
+        <button class="cta" id="run-test" type="button">Lancer le test</button>
+        <div class="test-result" id="test-result">En attente du test...</div>
+      </div>
+    </section>
+
     <section class="card" id="stack">
       <div class="badge">Faisabilité GitHub</div>
       <h3>Stack suggérée & modularisation</h3>
@@ -258,5 +285,32 @@
       Santé+ est réalisable sur GitHub avec une architecture modulaire, des workflows CI/CD et une feuille de route claire. Contactez-nous pour transformer ce concept en produit.
     </footer>
   </main>
+
+  <script>
+    const requiredSelectors = [
+      'header',
+      '.card h3:nth-of-type(1)',
+      '#stack',
+      '.two-col',
+      '.grid'
+    ];
+
+    function runSmokeTest() {
+      const resultBox = document.getElementById('test-result');
+      const missing = requiredSelectors.filter(sel => !document.querySelector(sel));
+      const timestamp = new Date().toLocaleTimeString('fr-FR');
+      if (missing.length === 0) {
+        resultBox.classList.remove('fail');
+        resultBox.classList.add('ok');
+        resultBox.textContent = `✔️ Test réussi (${timestamp}) : sections détectées.`;
+      } else {
+        resultBox.classList.remove('ok');
+        resultBox.classList.add('fail');
+        resultBox.textContent = `❌ Test échoué (${timestamp}) : éléments manquants → ${missing.join(', ')}`;
+      }
+    }
+
+    document.getElementById('run-test').addEventListener('click', runSmokeTest);
+  </script>
 </body>
 </html>

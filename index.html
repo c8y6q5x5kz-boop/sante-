@@ -2,729 +2,261 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Test Stroop – Kiné & Préparation Physique</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Santé+ – Plateforme IA pour cabinets de kiné</title>
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --bg: #0b1224;
+      --panel: #0f172a;
+      --border: #1f2937;
+      --primary: #22c55e;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --shadow: 0 28px 80px rgba(0,0,0,0.45);
     }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(56,189,248,0.08), transparent 25%),
+                  radial-gradient(circle at 80% 10%, rgba(34,197,94,0.12), transparent 28%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 28px;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 24px;
     }
-    .app {
+    .page {
       width: 100%;
-      max-width: 950px;
-      background: #020617;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      border: 1px solid #1f2937;
+      max-width: 1200px;
+      display: grid;
+      gap: 18px;
     }
     header {
-      margin-bottom: 16px;
+      background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(56,189,248,0.14));
+      border: 1px solid rgba(34,197,94,0.32);
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
     }
-    h1 {
-      margin: 0 0 4px;
-      font-size: 1.6rem;
-    }
-    .subtitle {
-      color: #9ca3af;
+    h1 { margin: 0 0 8px; font-size: 1.9rem; }
+    p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 999px;
       font-size: 0.9rem;
     }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      margin-top: 16px;
-      margin-bottom: 16px;
+      gap: 14px;
     }
     .card {
-      background: #020617;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .muted { color: var(--muted); }
+    .stats { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+    .stat {
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
       border-radius: 12px;
-      padding: 12px 14px;
-      border: 1px solid #1f2937;
+      flex: 1 1 180px;
     }
-    label {
-      display: block;
-      font-size: 0.85rem;
-      color: #9ca3af;
-      margin-bottom: 4px;
-    }
-    select, input {
-      width: 100%;
-      padding: 7px 9px;
-      border-radius: 8px;
-      border: 1px solid #374151;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 0.9rem;
-    }
-    .field-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 4px;
-    }
-    .field-row > div {
-      flex: 1;
-    }
-    .btn {
+    .stat strong { display: block; font-size: 1.3rem; color: var(--text); }
+    ul { margin: 8px 0 0 18px; color: var(--muted); line-height: 1.5; }
+    .cta {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 8px 14px;
+      gap: 8px;
+      padding: 10px 14px;
       border-radius: 999px;
-      border: none;
+      border: 1px solid rgba(34,197,94,0.45);
+      background: linear-gradient(135deg, rgba(34,197,94,0.16), rgba(34,197,94,0.32));
+      color: #052e16;
+      font-weight: 700;
       cursor: pointer;
-      font-weight: 500;
-      font-size: 0.95rem;
-      background: #22c55e;
-      color: #022c22;
-      transition: transform 0.05s ease, box-shadow 0.05s ease, opacity 0.15s;
-      box-shadow: 0 10px 30px rgba(34,197,94,0.35);
+      text-decoration: none;
+      box-shadow: 0 16px 40px rgba(34,197,94,0.3);
+      margin-top: 10px;
     }
-    .btn:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 4px 16px rgba(34,197,94,0.25);
-    }
-    .btn.secondary {
-      background: #111827;
-      color: #e5e7eb;
-      box-shadow: none;
-      border: 1px solid #4b5563;
-    }
-    .status-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      font-size: 0.85rem;
-      color: #9ca3af;
-      margin-bottom: 8px;
-    }
-    .pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid #374151;
-      background: #020617;
-    }
-    #consigne {
-      font-size: 0.95rem;
-      color: #facc15;
-      margin-bottom: 8px;
-    }
-    #stimulus-area {
-      margin-top: 16px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 120px;
-    }
-    #stimulus-word {
-      font-size: 3rem;
-      font-weight: 800;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-    #countdown {
-      font-size: 1.4rem;
-      text-align: center;
-      margin-top: 4px;
-      color: #9ca3af;
-    }
-    #buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 8px;
-      margin-bottom: 8px;
-    }
-    .color-btn {
-      min-width: 90px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 0.95rem;
-      color: #020617;
-      opacity: 0.9;
-      transition: transform 0.05s ease, opacity 0.1s;
-    }
-    .color-btn:active {
-      transform: translateY(1px) scale(0.97);
-      opacity: 1;
-    }
-    .color-rouge { background: #ef4444; }
-    .color-vert  { background: #22c55e; }
-    .color-bleu  { background: #3b82f6; }
-    .color-jaune { background: #eab308; }
-    #feedback {
-      min-height: 24px;
-      text-align: center;
-      font-size: 0.95rem;
-    }
-    .feedback-good {
-      color: #22c55e;
-    }
-    .feedback-bad {
-      color: #f97316;
-    }
-    .feedback-miss {
-      color: #facc15;
-    }
-    #results {
-      margin-top: 16px;
-      border-top: 1px dashed #1f2937;
-      padding-top: 12px;
-      font-size: 0.9rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-      font-size: 0.85rem;
-    }
-    th, td {
-      padding: 6px 4px;
-      border-bottom: 1px solid #111827;
-      text-align: left;
-    }
-    th {
-      color: #9ca3af;
-      font-weight: 500;
-    }
-    .muted {
-      color: #6b7280;
-      font-size: 0.8rem;
-    }
-    @media (max-width: 600px) {
-      #stimulus-word {
-        font-size: 2.2rem;
-      }
-      .app {
-        padding: 16px;
-      }
-    }
+    .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; }
+    .list-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px; }
+    .list-row li { margin-bottom: 6px; }
+    footer { text-align: center; color: var(--muted); font-size: 0.85rem; margin: 16px 0 6px; }
   </style>
 </head>
 <body>
-  <div class="app">
+  <main class="page">
     <header>
-      <h1>Test Stroop – Kiné & Préparation Physique</h1>
-      <div class="subtitle">
-        Outil terrain pour explorer inhibition, flexibilité mentale et vitesse de traitement chez le sportif.
+      <div class="badge">Concept produit</div>
+      <h1>Santé+ : cockpit IA pour kinés, orthos et praticiens libéraux</h1>
+      <p>Centralisez les dossiers patients, standardisez vos protocoles, générez des séances et des bilans avec l'IA, et automatisez la comptabilité. Le tout dans une interface pensée pour la pratique de terrain.</p>
+      <div class="pill-row">
+        <span class="pill">Scan carte Vitale & ordonnances</span>
+        <span class="pill">Planification IA</span>
+        <span class="pill">Agenda + Doctolib-like</span>
+        <span class="pill">Exercices vidéo guidés</span>
+        <span class="pill">Comptabilité automatisée</span>
+        <span class="pill">Suivi patients à distance</span>
       </div>
+      <a class="cta" href="#stack">Voir la faisabilité GitHub</a>
     </header>
 
-    <div class="grid">
-      <!-- Profil joueur / séance -->
-      <div class="card">
-        <label>Profil joueur / séance</label>
-        <div style="margin-top:4px;">
-          <input id="player-name" type="text" placeholder="Nom / Prénom joueur" />
+    <section class="grid">
+      <article class="card">
+        <h3>Problématique</h3>
+        <p class="muted">Trop de paperasse et d'outils dispersés. Les praticiens jonglent entre dossiers, compta, rendez-vous et suivi à distance, ce qui grignote le temps de soin.</p>
+        <div class="stats">
+          <div class="stat"><strong>3h</strong><span class="muted">/ semaine perdues en administratif</span></div>
+          <div class="stat"><strong>+25%</strong><span class="muted">de no-shows sans rappel automatisé</span></div>
+          <div class="stat"><strong>0</strong><span class="muted">standard partagé dans la plupart des cabinets</span></div>
         </div>
-        <div class="field-row">
-          <div>
-            <label for="player-sport">Sport</label>
-            <input id="player-sport" type="text" placeholder="Rugby, foot, etc." />
-          </div>
-          <div>
-            <label for="player-category">Catégorie</label>
-            <input id="player-category" type="text" placeholder="U16, Sénior, Fédérale 1…" />
-          </div>
+      </article>
+
+      <article class="card">
+        <h3>Solution Santé+</h3>
+        <p class="muted">Une plateforme web + mobile qui relie le dossier patient, la planification IA, la banque d'exercices vidéo et la comptabilité.</p>
+        <ul>
+          <li>Dossier patient enrichi par OCR (Vitale, ordonnances) et bilans guidés.</li>
+          <li>IA qui propose séances et progressions en fonction des bilans et du ressenti patient (RPE).</li>
+          <li>Agenda intelligent : créneaux, urgences, liste d'attente, redirection inter-cabinets.</li>
+          <li>Envoi d'exercices vidéo aux patients à distance, avec feedback et alertes.</li>
+          <li>Paiement, facturation et exports comptables automatisés.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card">
+      <div class="badge">Fonctionnalités clés</div>
+      <div class="grid" style="margin-top:12px;">
+        <div>
+          <h3>Dossier patient centralisé</h3>
+          <ul class="list-row">
+            <li>Scan carte Vitale & OCR pour pré-remplir identité et droits.</li>
+            <li>Capture d'ordonnances, stockage sécurisé, liens vers bilans.</li>
+            <li>Bilans normalisés, signatures, et suivi des objectifs.</li>
+            <li>Mode télésoin et suivi patients autonomes.</li>
+          </ul>
         </div>
-        <div class="field-row" style="margin-top:6px;">
-          <div>
-            <label for="player-session">Type de séance</label>
-            <input id="player-session" type="text" placeholder="Pré-saison, post-commotion…" />
-          </div>
-          <div>
-            <label for="player-rpe">RPE (0–10)</label>
-            <select id="player-rpe">
-              <option value="">—</option>
-              <option>0</option><option>1</option><option>2</option>
-              <option>3</option><option>4</option><option>5</option>
-              <option>6</option><option>7</option><option>8</option>
-              <option>9</option><option>10</option>
-            </select>
-          </div>
+        <div>
+          <h3>Organisation du cabinet</h3>
+          <ul class="list-row">
+            <li>Playbooks de séance générés par l'IA et personnalisables.</li>
+            <li>Standardisation multi-praticiens pour harmoniser les protocoles.</li>
+            <li>Rappels automatiques et gestion des urgences.</li>
+            <li>Agenda partagé, import Doctolib, créneaux dédiés.</li>
+          </ul>
         </div>
-        <p class="muted" style="margin-top:6px;">
-          À renseigner avant le test pour contextualiser les résultats (fatigue, contexte, etc.).
-        </p>
+        <div>
+          <h3>Exercices & vidéo</h3>
+          <ul class="list-row">
+            <li>Bibliothèque vidéo interne + intégration YouTube/Vimeo privée.</li>
+            <li>IA qui choisit les exercices pertinents selon l'évolution patient.</li>
+            <li>Consignes détaillées, tempo, nombre de répétitions, RPE cible.</li>
+            <li>Feedback patient et alertes en cas de mauvaise exécution.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Comptabilité & paiement</h3>
+          <ul class="list-row">
+            <li>Paiement via carte Vitale et TPE virtuel.</li>
+            <li>Exports comptables (FEC), rapprochement bancaire, TVA.</li>
+            <li>Suivi des frais professionnels et revenus.</li>
+            <li>Tableau de bord revenus / séances / no-show.</li>
+          </ul>
+        </div>
       </div>
+    </section>
 
-      <!-- Type de test -->
-      <div class="card">
-        <label for="mode-select">Type de test</label>
-        <select id="mode-select">
-          <option value="classic">Stroop Couleur (classique)</option>
-          <option value="inverse">Stroop Inversé (signification)</option>
-          <option value="alternance">Stroop Alternance (flexibilité)</option>
-        </select>
-        <p class="muted" id="mode-description"></p>
+    <section class="two-col">
+      <article class="card">
+        <div class="badge">Parcours patient</div>
+        <h3>Avant / pendant / après séance</h3>
+        <ul>
+          <li>Prise de RDV guidée : disponibilités patient vs. créneaux cabinet, reroutage si indisponible.</li>
+          <li>Collecte auto des documents (Vitale, ordonnance) et auto-remplissage du dossier.</li>
+          <li>Suivi vidéo entre séances, feedback, et rappel avant rendez-vous.</li>
+          <li>Notation RPE et douleurs → ajustement IA du plan de soin.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <div class="badge">Parcours praticien</div>
+        <h3>Productivité quotidienne</h3>
+        <ul>
+          <li>Vue cockpit : agenda, urgences, listes d'attente, alertes patients.</li>
+          <li>Génération de bilans et comptes rendus structurés.</li>
+          <li>Planification IA des séances à venir, avec templates par pathologie.</li>
+          <li>Facturation et enregistrement comptable automatique après chaque séance.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card" id="stack">
+      <div class="badge">Faisabilité GitHub</div>
+      <h3>Stack suggérée & modularisation</h3>
+      <p class="muted">Un dépôt GitHub peut héberger un monorepo ou une architecture multi-services :</p>
+      <ul>
+        <li><strong>Front web</strong> (Next.js/React) + <strong>mobile</strong> (React Native/Expo) partageant les composants et un design system.</li>
+        <li><strong>API</strong> (Node NestJS ou Python FastAPI) pour la logique métier : dossiers, rendez-vous, IA de planification.</li>
+        <li><strong>Services IA</strong> : scoring RPE, génération de séances (LLM + prompts), OCR (Tesseract/AWS Textract) pour carte Vitale/ordonnances.</li>
+        <li><strong>Infra</strong> : PostgreSQL + Prisma/SQLAlchemy, stockage chiffré (S3), authentification OAuth2 + CPS/Pro Santé Connect.</li>
+        <li><strong>CI/CD</strong> GitHub Actions : tests, lint, SAST, scans RGPD/HDS, builds web/mobile, déploiement Docker/K8s.</li>
+      </ul>
+      <p class="muted">Chaque module peut vivre dans des dossiers séparés (<code>apps/web</code>, <code>apps/mobile</code>, <code>services/api</code>, <code>packages/design-system</code>, <code>packages/ai</code>), avec tickets GitHub Projects pour suivre le backlog.</p>
+      <div class="pill-row">
+        <span class="pill">Sécurité RGPD/HDS</span>
+        <span class="pill">Tests e2e Playwright</span>
+        <span class="pill">Feature flags & A/B</span>
+        <span class="pill">Monitoring Sentry + Grafana</span>
       </div>
+    </section>
 
-      <!-- Niveau de difficulté + contrôles -->
-      <div class="card">
-        <label for="level-select">Niveau de difficulté</label>
-        <select id="level-select">
-          <option value="facile">Facile (échauffement / découverte)</option>
-          <option value="normal" selected>Normal (profilage)</option>
-          <option value="difficile">Difficile (charge cognitive élevée)</option>
-        </select>
-        <p class="muted" id="level-description"></p>
-        <label style="margin-top:8px;">Session</label>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:4px;">
-          <button id="start-btn" class="btn">Démarrer la session</button>
-          <button id="stop-btn" class="btn secondary" disabled>Stop</button>
+    <section class="card">
+      <div class="badge">Roadmap MVP (8–10 semaines)</div>
+      <div class="grid" style="margin-top:10px;">
+        <div>
+          <h3>Semaine 1-2</h3>
+          <ul>
+            <li>Design system, maquettes Figma, auth & rôles.</li>
+            <li>Modèle de données patient/bilan/rendez-vous.</li>
+            <li>Setup CI/CD GitHub Actions.</li>
+          </ul>
         </div>
-        <p class="muted">
-          Utilisable avant / après terrain ou en fin de séance.  
-          Ne remplace évidemment pas un bilan neuro complet.
-        </p>
+        <div>
+          <h3>Semaine 3-5</h3>
+          <ul>
+            <li>Agenda + prise de RDV + urgences.</li>
+            <li>Scan Vitale/ordonnances (OCR) et stockage sécurisé.</li>
+            <li>Première boucle IA : suggestions d'exercices et séances.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Semaine 6-8</h3>
+          <ul>
+            <li>Exercices vidéo patients + feedback.</li>
+            <li>Comptabilité de base, paiements, exports.</li>
+            <li>Tableaux de bord & alertes.</li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="status-row">
-      <div class="pill" id="status-mode">Mode : —</div>
-      <div class="pill" id="status-level">Niveau : —</div>
-      <div class="pill" id="status-progress">Essai : —</div>
-      <div class="pill" id="status-timer">Temps limite : —</div>
-    </div>
-    <div id="consigne"></div>
-
-    <div id="stimulus-area">
-      <div id="stimulus-word"></div>
-    </div>
-    <div id="countdown"></div>
-
-    <div id="buttons">
-      <button class="color-btn color-rouge" data-color="rouge">Rouge</button>
-      <button class="color-btn color-vert" data-color="vert">Vert</button>
-      <button class="color-btn color-bleu" data-color="bleu">Bleu</button>
-      <button class="color-btn color-jaune" data-color="jaune">Jaune</button>
-    </div>
-
-    <div id="feedback"></div>
-
-    <div id="results"></div>
-  </div>
-
-  <script>
-    const COLORS = [
-      { name: "rouge", label: "ROUGE", css: "red" },
-      { name: "vert",  label: "VERT",  css: "rgb(34,197,94)" },
-      { name: "bleu",  label: "BLEU",  css: "rgb(59,130,246)" },
-      { name: "jaune", label: "JAUNE", css: "rgb(234,179,8)" }
-    ];
-
-    const MODES = {
-      classic: {
-        label: "Stroop Couleur (classique)",
-        description: "Répondre à la COULEUR DE L'ENCRE. Test d'inhibition sélective."
-      },
-      inverse: {
-        label: "Stroop Inversé (signification)",
-        description: "Répondre à la SIGNIFICATION DU MOT. Demande de reconfiguration de consigne."
-      },
-      alternance: {
-        label: "Stroop Alternance",
-        description: "La consigne alterne (encre / mot). Travaille la flexibilité mentale."
-      }
-    };
-
-    const LEVELS = {
-      facile: {
-        label: "Facile",
-        description: "≈16 essais, temps large, majorité d'essais congruents.",
-        trials: 16,
-        timeLimitMs: 5000,
-        alternanceBloc: 6
-      },
-      normal: {
-        label: "Normal",
-        description: "≈24 essais, temps plus restreint, davantage d'incongruence.",
-        trials: 24,
-        timeLimitMs: 3000,
-        alternanceBloc: 4
-      },
-      difficile: {
-        label: "Difficile",
-        description: "≈32 essais, temps serré, forte charge incongruente et alternance fréquente.",
-        trials: 32,
-        timeLimitMs: 2000,
-        alternanceBloc: 3
-      }
-    };
-
-    const modeSelect        = document.getElementById("mode-select");
-    const levelSelect       = document.getElementById("level-select");
-    const modeDescription   = document.getElementById("mode-description");
-    const levelDescription  = document.getElementById("level-description");
-    const startBtn          = document.getElementById("start-btn");
-    const stopBtn           = document.getElementById("stop-btn");
-    const statusMode        = document.getElementById("status-mode");
-    const statusLevel       = document.getElementById("status-level");
-    const statusProgress    = document.getElementById("status-progress");
-    const statusTimer       = document.getElementById("status-timer");
-    const consigneElt       = document.getElementById("consigne");
-    const stimulusWord      = document.getElementById("stimulus-word");
-    const countdownElt      = document.getElementById("countdown");
-    const feedbackElt       = document.getElementById("feedback");
-    const resultsElt        = document.getElementById("results");
-    const colorButtons      = Array.from(document.querySelectorAll(".color-btn"));
-
-    const game = {
-      running: false,
-      trials: [],
-      currentIndex: 0,
-      currentTrialStart: null,
-      awaitingResponse: false,
-      results: [],
-      modeKey: null,
-      levelKey: null,
-      currentConsigne: "",
-      timeLimitMs: 0,
-      countdownTimer: null,
-      responseTimeout: null
-    };
-
-    function updateModeDescription() {
-      const modeKey = modeSelect.value;
-      const mode = MODES[modeKey];
-      modeDescription.textContent = mode.description;
-    }
-
-    function updateLevelDescription() {
-      const levelKey = levelSelect.value;
-      const level = LEVELS[levelKey];
-      levelDescription.textContent = level.description;
-    }
-
-    modeSelect.addEventListener("change", updateModeDescription);
-    levelSelect.addEventListener("change", updateLevelDescription);
-    updateModeDescription();
-    updateLevelDescription();
-
-    function shuffleArray(arr) {
-      const a = arr.slice();
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    function createTrial(modeKey, levelKey, index) {
-      const level = LEVELS[levelKey];
-      const baseColors = COLORS;
-      let wordColor = baseColors[Math.floor(Math.random() * baseColors.length)];
-      let inkColor = baseColors[Math.floor(Math.random() * baseColors.length)];
-
-      let type;
-      const r = Math.random();
-      if (r < 0.7) type = "incongruent";
-      else if (r < 0.9) type = "congruent";
-      else type = "neutre";
-
-      if (type === "congruent") {
-        inkColor = wordColor;
-      } else if (type === "incongruent") {
-        const others = baseColors.filter(c => c.name !== wordColor.name);
-        inkColor = others[Math.floor(Math.random() * others.length)];
-      } else if (type === "neutre") {
-        wordColor = { name: "neutre", label: "XXXX", css: inkColor.css };
-      }
-
-      let consigneType = "encre";
-      if (modeKey === "classic") {
-        consigneType = "encre";
-      } else if (modeKey === "inverse") {
-        consigneType = "mot";
-      } else if (modeKey === "alternance") {
-        const bloc = level.alternanceBloc || 4;
-        const blocIndex = Math.floor(index / bloc);
-        consigneType = blocIndex % 2 === 0 ? "encre" : "mot";
-      }
-
-      let correctColorName;
-      if (consigneType === "encre") {
-        correctColorName = inkColor.name;
-      } else {
-        correctColorName = wordColor.name === "neutre" ? inkColor.name : wordColor.name;
-      }
-
-      return {
-        index,
-        modeKey,
-        levelKey,
-        wordLabel: wordColor.label,
-        inkCss: inkColor.css,
-        type,
-        consigneType,
-        correctColorName
-      };
-    }
-
-    function generateTrials(modeKey, levelKey) {
-      const level = LEVELS[levelKey];
-      const trials = [];
-      for (let i = 0; i < level.trials; i++) {
-        trials.push(createTrial(modeKey, levelKey, i));
-      }
-      return shuffleArray(trials);
-    }
-
-    function startSession() {
-      if (game.running) return;
-
-      const modeKey = modeSelect.value;
-      const levelKey = levelSelect.value;
-      const level = LEVELS[levelKey];
-
-      game.modeKey = modeKey;
-      game.levelKey = levelKey;
-      game.trials = generateTrials(modeKey, levelKey);
-      game.currentIndex = 0;
-      game.results = [];
-      game.timeLimitMs = level.timeLimitMs;
-      game.running = true;
-      game.awaitingResponse = false;
-      feedbackElt.textContent = "";
-      resultsElt.innerHTML = "";
-      countdownElt.textContent = "";
-      stimulusWord.textContent = "";
-      stimulusWord.style.color = "#e5e7eb";
-
-      startBtn.disabled = true;
-      stopBtn.disabled = false;
-      modeSelect.disabled = true;
-      levelSelect.disabled = true;
-
-      statusMode.textContent   = "Mode : " + MODES[modeKey].label;
-      statusLevel.textContent  = "Niveau : " + level.label;
-      statusTimer.textContent  = "Temps limite : " + (game.timeLimitMs / 1000).toFixed(1) + " s";
-      statusProgress.textContent = "Essai : 0 / " + level.trials;
-
-      let count = 3;
-      countdownElt.textContent = "Début dans " + count + "…";
-      game.countdownTimer = setInterval(() => {
-        count--;
-        if (count <= 0) {
-          clearInterval(game.countdownTimer);
-          countdownElt.textContent = "";
-          nextTrial();
-        } else {
-          countdownElt.textContent = "Début dans " + count + "…";
-        }
-      }, 1000);
-    }
-
-    function stopSession(manual = true) {
-      if (!game.running) return;
-
-      game.running = false;
-      game.awaitingResponse = false;
-      if (game.countdownTimer) clearInterval(game.countdownTimer);
-      if (game.responseTimeout) clearTimeout(game.responseTimeout);
-
-      startBtn.disabled = false;
-      stopBtn.disabled = true;
-      modeSelect.disabled = false;
-      levelSelect.disabled = false;
-
-      stimulusWord.textContent = manual ? "Pause" : "Fin";
-      stimulusWord.style.color = "#e5e7eb";
-      countdownElt.textContent = "";
-      consigneElt.textContent = "";
-      statusProgress.textContent = "Essai : —";
-      feedbackElt.textContent = "";
-
-      if (!manual) {
-        renderResults();
-      }
-    }
-
-    function nextTrial() {
-      if (!game.running) return;
-
-      if (game.currentIndex >= game.trials.length) {
-        stopSession(false);
-        return;
-      }
-
-      const t = game.trials[game.currentIndex];
-      game.currentConsigne = t.consigneType === "encre"
-        ? "Répondre à la COULEUR DE L'ENCRE."
-        : "Répondre à la SIGNIFICATION DU MOT.";
-
-      consigneElt.textContent = game.currentConsigne;
-      statusProgress.textContent =
-        "Essai : " + (game.currentIndex + 1) + " / " + game.trials.length;
-
-      stimulusWord.textContent = t.wordLabel;
-      stimulusWord.style.color = t.inkCss;
-      feedbackElt.textContent = "";
-      feedbackElt.className = "";
-
-      game.awaitingResponse = true;
-      game.currentTrialStart = performance.now();
-
-      if (game.responseTimeout) clearTimeout(game.responseTimeout);
-      game.responseTimeout = setTimeout(() => {
-        if (game.awaitingResponse) {
-          registerResponse(null, t);
-        }
-      }, game.timeLimitMs);
-    }
-
-    function registerResponse(userColor, trial) {
-      if (!game.running || !game.awaitingResponse) return;
-
-      game.awaitingResponse = false;
-      const now = performance.now();
-      const rt = userColor ? now - game.currentTrialStart : null;
-      const correct = userColor ? (userColor === trial.correctColorName) : false;
-      const missed = userColor === null;
-
-      game.results.push({
-        trialIndex: trial.index,
-        modeKey: trial.modeKey,
-        levelKey: trial.levelKey,
-        type: trial.type,
-        consigneType: trial.consigneType,
-        correctColor: trial.correctColorName,
-        userColor: userColor,
-        rt
-      });
-
-      if (missed) {
-        feedbackElt.textContent = "⏱️ Temps dépassé";
-        feedbackElt.className = "feedback-miss";
-      } else if (correct) {
-        feedbackElt.textContent = "✅ Correct (" + rt.toFixed(0) + " ms)";
-        feedbackElt.className = "feedback-good";
-      } else {
-        feedbackElt.textContent = "❌ Incorrect";
-        feedbackElt.className = "feedback-bad";
-      }
-
-      game.currentIndex++;
-
-      setTimeout(() => {
-        nextTrial();
-      }, 300);
-    }
-
-    colorButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        if (!game.running || !game.awaitingResponse) return;
-        const color = btn.getAttribute("data-color");
-        const trial = game.trials[game.currentIndex];
-        registerResponse(color, trial);
-      });
-    });
-
-    function renderResults() {
-      if (!game.results.length) {
-        resultsElt.innerHTML = "<p>Aucune donnée enregistrée.</p>";
-        return;
-      }
-
-      const total = game.results.length;
-      const answered = game.results.filter(r => r.userColor !== null);
-      const correct = answered.filter(r => r.userColor === r.correctColor);
-      const missed = total - answered.length;
-
-      const meanRT = correct.length
-        ? correct.reduce((sum, r) => sum + r.rt, 0) / correct.length
-        : null;
-
-      const accuracy = (correct.length / total) * 100;
-      const answeredPct = (answered.length / total) * 100;
-      const missedPct = (missed / total) * 100;
-
-      const incongruent = game.results.filter(r => r.type === "incongruent");
-      const congruent   = game.results.filter(r => r.type === "congruent");
-      const neutral     = game.results.filter(r => r.type === "neutre");
-
-      function meanRtFor(arr) {
-        const c = arr.filter(r => r.userColor === r.correctColor && r.rt !== null);
-        if (!c.length) return null;
-        return c.reduce((s, r) => s + r.rt, 0) / c.length;
-      }
-
-      const rtIncong = meanRtFor(incongruent);
-      const rtCong   = meanRtFor(congruent);
-      const rtNeutre = meanRtFor(neutral);
-
-      const playerName     = document.getElementById("player-name").value || "—";
-      const playerSport    = document.getElementById("player-sport").value || "—";
-      const playerCategory = document.getElementById("player-category").value || "—";
-      const playerSession  = document.getElementById("player-session").value || "—";
-      const playerRpe      = document.getElementById("player-rpe").value || "—";
-
-      const modeLabel  = MODES[game.modeKey].label;
-      const levelLabel = LEVELS[game.levelKey].label;
-      const now = new Date();
-      const dateStr = now.toLocaleString("fr-FR");
-
-      let html = "";
-      html += "<h3>Résultats session Stroop</h3>";
-      html += "<p><strong>Date :</strong> " + dateStr + "</p>";
-      html += "<p><strong>Joueur :</strong> " + playerName +
-              " | <strong>Sport :</strong> " + playerSport +
-              " | <strong>Catégorie :</strong> " + playerCategory + "</p>";
-      html += "<p><strong>Contexte :</strong> " + playerSession +
-              " | <strong>RPE :</strong> " + playerRpe + "/10</p>";
-      html += "<p><strong>Mode :</strong> " + modeLabel +
-              " | <strong>Niveau :</strong> " + levelLabel + "</p>";
-
-      html += "<table>";
-      html += "<tr><th>Indicateur</th><th>Valeur</th></tr>";
-      html += "<tr><td>Essais totaux</td><td>" + total + "</td></tr>";
-      html += "<tr><td>Réponses données</td><td>" +
-              answered.length + " (" + answeredPct.toFixed(1) + " %)</td></tr>";
-      html += "<tr><td>Réponses correctes</td><td>" +
-              correct.length + " (" + accuracy.toFixed(1) + " %)</td></tr>";
-      html += "<tr><td>Essais non répondus</td><td>" +
-              missed + " (" + missedPct.toFixed(1) + " %)</td></tr>";
-      html += "<tr><td>Temps de réaction moyen (réponses correctes)</td><td>" +
-              (meanRT ? meanRT.toFixed(0) + " ms" : "—") + "</td></tr>";
-      html += "</table>";
-
-      html += "<p class='muted' style='margin-top:8px;'>Détails par type d'essai (TR moyen, réponses correctes uniquement) :</p>";
-      html += "<table>";
-      html += "<tr><th>Type</th><th>TR moyen</th><th>Nombre d'essais</th></tr>";
-      html += "<tr><td>Incongruents</td><td>" +
-        (rtIncong ? rtIncong.toFixed(0) + " ms" : "—") +
-        "</td><td>" + incongruent.length + "</td></tr>";
-      html += "<tr><td>Congruents</td><td>" +
-        (rtCong ? rtCong.toFixed(0) + " ms" : "—") +
-        "</td><td>" + congruent.length + "</td></tr>";
-      html += "<tr><td>Neutres</td><td>" +
-        (rtNeutre ? rtNeutre.toFixed(0) + " ms" : "—") +
-        "</td><td>" + neutral.length + "</td></tr>";
-      html += "</table>";
-
-      html += "<p class='muted' style='margin-top:8px;'>Interprétation terrain : comparer les TR et la précision entre séances, ou pré/post charge physique / pré/post commotion, etc.</p>";
-
-      resultsElt.innerHTML = html;
-    }
-
-    startBtn.addEventListener("click", startSession);
-    stopBtn.addEventListener("click", () => stopSession(true));
-  </script>
+    <footer>
+      Santé+ est réalisable sur GitHub avec une architecture modulaire, des workflows CI/CD et une feuille de route claire. Contactez-nous pour transformer ce concept en produit.
+    </footer>
+  </main>
 </body>
 </html>
